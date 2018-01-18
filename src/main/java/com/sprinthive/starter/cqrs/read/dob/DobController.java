@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 @Slf4j
 @RestController
 public class DobController {
@@ -19,9 +23,15 @@ public class DobController {
     DobService dobService;
 
     @RequestMapping(value = "/cqrs/read/dob/v1/{entityKey}/{entityId}")
-    private DobEntity readDobV1(@PathVariable String entityKey,
-                                 @PathVariable String entityId) {
+    private Date readDobV1(@PathVariable String entityKey,
+                           @PathVariable String entityId) {
         dobService.findDob(entityKey, entityId);
         return dobService.findDob(entityKey, entityId);
+    }
+
+    @RequestMapping(value = "/cqrs/read/any/v1/{entityKey}/{entityId}")
+    private List<DobEntity> readAny(@PathVariable String entityKey,
+                              @PathVariable String entityId) {
+        return dobService.getValues(entityKey, entityId);
     }
 }

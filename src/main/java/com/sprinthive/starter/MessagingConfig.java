@@ -22,5 +22,8 @@ public class MessagingConfig {
 
         @Input
         SubscribableChannel healthCheckMessageConsumer();
+
+        @Input
+        SubscribableChannel dobMessageConsumer();
     }
 }

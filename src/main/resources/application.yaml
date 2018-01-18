@@ -1,10 +1,17 @@
 server:
-  port: 7001
+  port: 7002
 spring:
   application:
-    name: spring-starter
+    name: cqrs-read-dob
   rabbitmq:
     addresses: rabbitmq
+    username: user
+    password: wfrfqm6HXn
+  data:
+    mongodb:
+      host: mongodb
+      database: cqrs-read-dob
+      port: 27017
   cloud:
     stream:
       bindings:
@@ -15,6 +22,18 @@ spring:
           destination: spring-starter
           group: health-check-group
           durableSubscription: true
+        dobMessageConsumer:
+          destination: cqrs.person.dobUpdated
+          group: cqrs-dob-group
+          durableSubscription: true
+      rabbit:
+        bindings:
+          dobMessageConsumer:
+            consumer:
+              republishToDlq: true
+              max-attempts: 3
+              autoBindDlq: true
+              dlqLazy: true
   jackson:
     serialization.write_dates_as_timestamps: false
     deserialization.adjust_dates_to_context_time_zone: false
